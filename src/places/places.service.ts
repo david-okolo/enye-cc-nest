@@ -1,4 +1,4 @@
-import { Injectable, Inject } from '@nestjs/common';
+import { Injectable, Inject, InternalServerErrorException } from '@nestjs/common';
 import { LatLng, TextSearchResponse, Client } from '@googlemaps/google-maps-services-js';
 import { MapService } from '../constants';
 
@@ -31,6 +31,7 @@ export class PlacesService {
             results.push(...data.results)
         } catch (error) {
             console.log(error)
+            return new InternalServerErrorException("Google api request failed");
         }
     
         return results;
