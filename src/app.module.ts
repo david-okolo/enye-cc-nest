@@ -5,9 +5,15 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { PlacesModule } from './places/places.module';
 import { UserModule } from './user/user.module';
+import { AuthModule } from './auth/auth.module';
+import { PassportModule } from '@nestjs/passport';
+import { SearchModule } from './search/search.module';
+import { ProfileModule } from './profile/profile.module';
 
 @Module({
   imports: [
+    AuthModule,
+    PassportModule,
     ConfigModule.forRoot(),
     MongooseModule.forRootAsync({
       imports: [ConfigModule],
@@ -16,7 +22,8 @@ import { UserModule } from './user/user.module';
       }),
       inject: [ConfigService]
     }), 
-    PlacesModule, UserModule
+    PlacesModule, 
+    UserModule, SearchModule, ProfileModule, 
   ],
   controllers: [AppController],
   providers: [
