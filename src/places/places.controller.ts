@@ -12,7 +12,15 @@ export class PlacesController {
     @UseGuards(JwtGuard)
     @Post()
     async getPlaces(@Req() req, @Body() getPlacesDto: GetPlacesDto) {
-        const data = await this.placesService.getHospitals(req.user, getPlacesDto);
+        const data = await this.placesService.getHospitals(getPlacesDto, req.user);
+        return {
+            data
+        }
+    }
+
+    @Post('free')
+    async getPlacesUnrestricted(@Body() getPlacesDto: GetPlacesDto) {
+        const data = await this.placesService.getHospitals(getPlacesDto);
         return {
             data
         }

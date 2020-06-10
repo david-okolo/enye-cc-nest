@@ -13,7 +13,7 @@ export class PlacesService {
     ) {}
 
 
-    getHospitals = async (user, body: GetPlacesDto) => {
+    getHospitals = async (body: GetPlacesDto, user = null) => {
 
         const { 
             query,
@@ -33,7 +33,9 @@ export class PlacesService {
                 }
             })
 
-            await this.searchService.create(user, body)
+            if(user) {
+                await this.searchService.create(user, body)
+            }
     
             results.push(...data.results)
         } catch (error) {
