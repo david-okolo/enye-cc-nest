@@ -4,11 +4,13 @@ import { User } from './schemas/user.schema';
 import { Model } from 'mongoose';
 import { CreateUserDto } from './dto/createUser.dto';
 import * as bcrypt from 'bcrypt';
+import { ProfileService } from '../profile/profile.service';
 
 @Injectable()
 export class UserService {
     constructor(
-        @InjectModel(User.name) private userModel: Model<User>
+        @InjectModel(User.name) private userModel: Model<User>,
+        private profileService: ProfileService
     ) {}
 
     async create({name, email, password}: CreateUserDto) {
@@ -27,7 +29,8 @@ export class UserService {
         const hashedPassword = await bcrypt.hash(password, 10);
 
         try {
-            await this.userModel.create({ name, email, password: hashedPassword})
+            const user = await this.userModel.create({ name, email, password: hashedPassword})
+            await this.profileService.createNewProfile(user._id);
         } catch (error) {
             console.log(error);
             throw new InternalServerErrorException('Error saving user to db')

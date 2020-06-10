@@ -1,6 +1,7 @@
-import { Controller, Post, Body } from '@nestjs/common';
+import { Controller, Post, Body, UseGuards, Req } from '@nestjs/common';
 import { GetPlacesDto } from './dto/getPlaces.dto';
 import { PlacesService } from './places.service';
+import { JwtGuard } from '../auth/guards/jwt-auth.guard';
 
 @Controller('places')
 export class PlacesController {
@@ -8,10 +9,10 @@ export class PlacesController {
         private placesService: PlacesService
     ) {}
 
+    @UseGuards(JwtGuard)
     @Post()
-    async getPlaces(@Body() getPlacesDto: GetPlacesDto) {
-
-        const data = await this.placesService.getHospitals(getPlacesDto);
+    async getPlaces(@Req() req, @Body() getPlacesDto: GetPlacesDto) {
+        const data = await this.placesService.getHospitals(req.user, getPlacesDto);
         return {
             data
         }
