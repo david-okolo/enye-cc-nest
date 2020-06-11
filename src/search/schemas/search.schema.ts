@@ -9,8 +9,8 @@ export class Search extends Document {
     @Prop()
     radius: number
 
-    @Prop(Date)
-    timestamp: Date
+    @Prop()
+    timestamp: number
 }
 
 export const SearchSchema = SchemaFactory.createForClass(Search);

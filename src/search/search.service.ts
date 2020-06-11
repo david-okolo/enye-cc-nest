@@ -30,7 +30,7 @@ export class SearchService {
         const search = new this.searchModel({
             keyword: body.query,
             radius: body.radius,
-            timestamp: new Date()
+            timestamp: Date.now()
         })
         profile.pastSearches.push(search);
 
