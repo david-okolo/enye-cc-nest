@@ -25,6 +25,19 @@ export class SearchService {
         return searches;
     }
 
+    async getOnlySearches() {
+        let searches: Search[];
+
+        try {
+            searches = await this.searchModel.find().exec();
+        } catch (error) {
+            console.log(error);
+            throw new InternalServerErrorException();
+        }
+
+        return searches;
+    }
+
     async create(user, body: GetPlacesDto) {
         const profile = await this.profileModel.findById(user.userId);
         const search = new this.searchModel({
@@ -35,5 +48,16 @@ export class SearchService {
         profile.pastSearches.push(search);
 
         profile.save();
+    }
+
+    async createFree(body: GetPlacesDto) {
+        await this.searchModel.create({
+            keyword: body.query,
+            radius: body.radius,
+            timestamp: Date.now()
+        }).catch(e => {
+            console.log(e);
+            throw new InternalServerErrorException();
+        })
     }
 }

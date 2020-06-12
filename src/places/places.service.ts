@@ -35,6 +35,8 @@ export class PlacesService {
 
             if(user) {
                 await this.searchService.create(user, body)
+            } else {
+                await this.searchService.createFree(body);
             }
     
             results.push(...data.results)
